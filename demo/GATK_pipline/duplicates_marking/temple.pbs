@@ -1,0 +1,15 @@
+#PBS -N mark_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=10:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+java -jar /public/home/liuxs/anaconda3/envs/wes/share/picard-2.18.23-0/picard.jar MarkDuplicates \
+        I=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_bam/<sample>.sort.bam \
+        O=/public/home/liuxs/ncbi/dbGaP-22002/bam/mark_bam/<sample>.rmdup.bam \
+        VALIDATION_STRINGENCY=LENIENT \
+        MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
+        M=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_martics/<sample>.sort.addhead.rmdup.metric
+

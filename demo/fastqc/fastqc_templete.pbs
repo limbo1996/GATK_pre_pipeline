@@ -1,0 +1,9 @@
+#PBS -N <sample>_qc
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=05:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+source activate wes
+workdir=/public/home/liuxs/ncbi/dbGaP-22002
+fastqc -o $workdir/dnaseq/fastqc  $workdir/fastq_gz/<sample>.fastq.gz

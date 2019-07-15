@@ -1,0 +1,15 @@
+#PBS -N BQSR_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate /public/home/liuxs/tmp/test/wes/
+
+java -jar -Xmx12G -Djava.io.tmpdir=/public/home/wangshx/wx/tmp  /public/home/liuxs/tmp/test/wes/share/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar BaseRecalibrator \
+-R /public/home/liuxs/biodata/reference/genome/hg19/hg19.fa \
+-I /public/home/liuxs/ncbi/dbGaP-22002/bam/mark_bam/<sample>.rmdup.bam \
+--known-sites /public/home/liuxs/biodata/reference/genome/hg19/ftp.broadinstitute.org/bundle/hg19/dbsnp_138.hg19.vcf.gz \
+-O /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR_bam/report/ex_<sample>.recal_data.grp 
+

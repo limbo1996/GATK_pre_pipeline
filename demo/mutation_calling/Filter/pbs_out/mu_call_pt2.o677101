@@ -1,0 +1,64 @@
+14:05:29.519 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/public/home/liuxs/tmp/test/wes/share/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar!/com/intel/gkl/native/libgkl_compression.so
+Jul 09, 2019 2:05:31 PM shaded.cloud_nio.com.google.auth.oauth2.ComputeEngineCredentials runningOnComputeEngine
+INFO: Failed to detect whether we are running on Google Compute Engine.
+14:05:31.547 INFO  FilterMutectCalls - ------------------------------------------------------------
+14:05:31.547 INFO  FilterMutectCalls - The Genome Analysis Toolkit (GATK) v4.1.2.0
+14:05:31.547 INFO  FilterMutectCalls - For support and documentation go to https://software.broadinstitute.org/gatk/
+14:05:31.548 INFO  FilterMutectCalls - Executing as wangshx@node13 on Linux v2.6.32-504.el6.x86_64 amd64
+14:05:31.548 INFO  FilterMutectCalls - Java runtime: OpenJDK 64-Bit Server VM v1.8.0_152-release-1056-b12
+14:05:31.549 INFO  FilterMutectCalls - Start Date/Time: July 9, 2019 2:05:29 PM CST
+14:05:31.549 INFO  FilterMutectCalls - ------------------------------------------------------------
+14:05:31.549 INFO  FilterMutectCalls - ------------------------------------------------------------
+14:05:31.550 INFO  FilterMutectCalls - HTSJDK Version: 2.19.0
+14:05:31.550 INFO  FilterMutectCalls - Picard Version: 2.19.0
+14:05:31.550 INFO  FilterMutectCalls - HTSJDK Defaults.COMPRESSION_LEVEL : 2
+14:05:31.550 INFO  FilterMutectCalls - HTSJDK Defaults.USE_ASYNC_IO_READ_FOR_SAMTOOLS : false
+14:05:31.550 INFO  FilterMutectCalls - HTSJDK Defaults.USE_ASYNC_IO_WRITE_FOR_SAMTOOLS : true
+14:05:31.551 INFO  FilterMutectCalls - HTSJDK Defaults.USE_ASYNC_IO_WRITE_FOR_TRIBBLE : false
+14:05:31.551 INFO  FilterMutectCalls - Deflater: IntelDeflater
+14:05:31.551 INFO  FilterMutectCalls - Inflater: IntelInflater
+14:05:31.551 INFO  FilterMutectCalls - GCS max retries/reopens: 20
+14:05:31.551 INFO  FilterMutectCalls - Requester pays: disabled
+14:05:31.551 INFO  FilterMutectCalls - Initializing engine
+14:05:31.978 INFO  FeatureManager - Using codec VCFCodec to read file file:///public/home/liuxs/ncbi/dbGaP-22002/vcf/pt2.mutect2.vcf
+14:05:32.188 INFO  FilterMutectCalls - Done initializing engine
+14:05:32.357 INFO  ProgressMeter - Starting traversal
+14:05:32.357 INFO  ProgressMeter -        Current Locus  Elapsed Minutes    Variants Processed  Variants/Minute
+14:05:32.358 INFO  FilterMutectCalls - Starting pass 0 through the variants
+14:05:42.385 INFO  ProgressMeter -      chr13:112652142              0.2                142000         850044.9
+14:05:52.391 INFO  ProgressMeter -       chr19:45571781              0.3                300000         898517.4
+14:06:02.414 INFO  ProgressMeter -       chr2:128878667              0.5                462000         922278.4
+14:06:12.455 INFO  ProgressMeter -       chr5:168506180              0.7                626000         936728.4
+14:06:22.461 INFO  ProgressMeter -       chr9:130441366              0.8                789000         944853.6
+14:06:25.095 INFO  FilterMutectCalls - Finished pass 0 through the variants
+14:06:36.688 INFO  FilterMutectCalls - Starting pass 1 through the variants
+14:06:36.760 INFO  ProgressMeter -        chr10:1591405              1.1                831000         774199.6
+14:06:46.811 INFO  ProgressMeter -       chr12:28507192              1.2                923000         743825.0
+14:06:56.828 INFO  ProgressMeter -       chr15:70425513              1.4               1016000         721676.3
+14:07:06.888 INFO  ProgressMeter -       chr18:72953281              1.6               1108000         703268.8
+14:07:16.945 INFO  ProgressMeter -       chr1:214634001              1.7               1197000         686701.0
+14:07:27.022 INFO  ProgressMeter -       chr2:122708224              1.9               1291000         675544.9
+14:07:37.064 INFO  ProgressMeter -        chr4:42127762              2.1               1385000         666367.3
+14:07:47.081 INFO  ProgressMeter -        chr6:70957921              2.2               1480000         659135.1
+14:07:57.141 INFO  ProgressMeter -        chr8:59938169              2.4               1572000         651457.7
+14:08:06.717 INFO  FilterMutectCalls - Finished pass 1 through the variants
+14:09:15.378 INFO  FilterMutectCalls - Starting pass 2 through the variants
+14:09:15.438 INFO  ProgressMeter -         chr10:643175              3.7               1661000         446745.6
+14:09:25.450 INFO  ProgressMeter -      chr11:112832391              3.9               1736000         446862.2
+14:09:35.515 INFO  ProgressMeter -       chr14:60091809              4.1               1814000         447612.0
+14:09:45.579 INFO  ProgressMeter -        chr17:6493198              4.2               1891000         448067.1
+14:09:55.679 INFO  ProgressMeter -       chr19:54756024              4.4               1966000         447970.3
+14:10:05.776 INFO  ProgressMeter -         chr20:909820              4.6               2039000         447446.8
+14:10:15.850 INFO  ProgressMeter -        chr2:99725575              4.7               2115000         447633.3
+14:10:25.865 INFO  ProgressMeter -       chr3:172353508              4.9               2196000         448916.0
+14:10:35.948 INFO  ProgressMeter -       chr5:136240472              5.1               2279000         450411.6
+14:10:46.066 INFO  ProgressMeter -        chr7:73889810              5.2               2358000         450992.6
+14:10:56.082 INFO  ProgressMeter -        chr9:68359511              5.4               2434000         451125.0
+14:11:04.078 INFO  FilterMutectCalls - Finished pass 2 through the variants
+14:11:04.099 INFO  FilterMutectCalls - No variants filtered by: AllowAllVariantsVariantFilter
+14:11:04.099 INFO  FilterMutectCalls - No reads filtered by: AllowAllReadsReadFilter
+14:11:04.100 INFO  ProgressMeter -        chrY:58993663              5.5               2491242         450574.6
+14:11:04.100 INFO  ProgressMeter - Traversal complete. Processed 2491242 total variants in 5.5 minutes.
+14:11:04.340 INFO  FilterMutectCalls - Shutting down engine
+[July 9, 2019 2:11:04 PM CST] org.broadinstitute.hellbender.tools.walkers.mutect.filtering.FilterMutectCalls done. Elapsed time: 5.58 minutes.
+Runtime.totalMemory()=4482662400

@@ -1,0 +1,12 @@
+#PBS -N fastq_<sample>
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=20:00:00
+#PBS -l mem=10gb
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+workdir=/public/home/liuxs/ncbi/dbGaP-22002
+cd $workdir
+fastq-dump -outdir fastq_gz --split-3 --skip-technical --clip --gzip $workdir/sra/<sample>

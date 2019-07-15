@@ -1,0 +1,13 @@
+#PBS -N sam2bam_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=05:00:00
+#PBS -l mem=10gb
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+samtools view -bS /public/home/liuxs/ncbi/dbGaP-22002/bwa/reorder_sam/<sample>.reorder.sam>\
+/public/home/liuxs/ncbi/dbGaP-22002/bam/unsort_bam/<sample>.bam
+

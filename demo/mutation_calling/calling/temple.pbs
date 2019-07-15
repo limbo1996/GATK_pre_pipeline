@@ -1,0 +1,22 @@
+#PBS -N mu_call_<sample2>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate /public/home/liuxs/tmp/test/wes/
+
+java -jar -Xmx12G -Djava.io.tmpdir=/public/home/wangshx/wx/tmp \
+/public/home/liuxs/tmp/test/wes/share/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar Mutect2 \
+ -R /public/home/liuxs/biodata/reference/genome/hg19/hg19.fa \
+ -I /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR_bam/files/<sample>.marked.BQSR.bam \
+ -I /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR_bam/files/<sample1>.marked.BQSR.bam \
+ -O /public/home/liuxs/ncbi/dbGaP-22002/vcf/<sample2>.mutect2.vcf
+
+
+java -jar -Xmx12G -Djava.io.tmpdir=/public/home/wangshx/wx/tmp \ 
+/public/home/liuxs/tmp/test/wes/share/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar FilterMutectCalls \
+ -V /public/home/liuxs/ncbi/dbGaP-22002/vcf/<sample2>.mutect2.vcf
+ -O /public/home/liuxs/ncbi/dbGaP-22002/vcf/<sample2>.somatic.vcf
+
