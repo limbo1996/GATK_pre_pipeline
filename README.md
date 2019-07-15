@@ -41,7 +41,7 @@ fastq-dump -outdir fastq_gz --split-3 --skip-technical --clip --gzip $workdir/sr
 之后可以用`multiqc`工具将QC结果整合成一个网页，方便总体查看。
 ### 3.去接头
 测序的时候会加上接头，在这里要去除.
-工具：[Trim galore](https://www.jianshu.com/p/7a3de6b8e503)
+工具：[Trim galore](https://www.jianshu.com/p/7a3de6b8e503),
 Trim galore 适用于所有的高通量测序，在这里我们的数据使用的是ILLUMINA,主要功能：
 * 去除低质量的碱基，然后取出3'末端的接头，如果没有指定具体接头信息，程序会自动检测匹配。
 具体脚本
