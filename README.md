@@ -3,11 +3,10 @@
 ## 最近做的数据处理，从sra数据得到mutation calling 以及indels，的过程，同样包括HLA-typing
 得到的突变以及indels的信息在VCF文件中。从最初的测序数据sra得到VCF文件。
 > 流程参考的[GATK官](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165)网推荐的流程
-  计算所用平台是上海科技大学计算平台。PBS脚本皆使用[@ShixiangWang](https://github.com/ShixiangWang/sync-deploy)师兄写的工具批量创建提交
+  计算所用平台是上海科技大学计算平台。PBS脚本皆使用[@ShixiangWang](https://github.com/ShixiangWang/sync-deploy)师兄写的工具批量创建提交每一个样本生成一个PBS文件。
+
 
 ![流程图](https://github.com/limbo1996/GATK_pre_pipeline/blob/master/IMG/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190716222447.png)
-每一个样本生成一个PBS文件。
-
 ### 环境创建
 首先我们使用的是conda管理环境，创建一个名为wes的环境.
 ### 1.sra数据处理
