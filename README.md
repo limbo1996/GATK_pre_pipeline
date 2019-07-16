@@ -59,7 +59,65 @@ trim_galore -q 20 --phred33 --stringency 3 --length 20 -e 0.1 --paired $workdir/
 ~~~
 具体参数含义参照前文网页。
 
-### 4.bwa
+### 4.bwa比对
+  这一步的意义是将测序数据与参考基因组mapping，因为我们册数结果是一个一个的reads,所以需要组装。因为是重复的文章的数据，所以参考基因组用的和文章相同即hg19。
+  用到的工具是：BWA，安装依旧使用的conda
+  [BWA流程](http://starsyi.github.io/2016/05/24/BWA-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/)：
+  BWA的比对有三个不同的算法：
+  * BWA-backtrack：是用来比对ILLUMINA的序列，reads长度能达到100bp
+  * BWA-SW：用于比对long-reads的，支持的长度为70bp-1Mbp；同时支持剪切性比对
+  * BWA-MEM：是更新的算法，也是这次我们要用的算法，支持较长的reads同时也支持剪接性比对。
+ 
+ 使用：
+  #### 4.1构建索引index
+  进行比对之前，需要对fastq文件构建索引。算法选用的`bwtsw`
+  ~~~
+  index   Usage：bwa index [ –p prefix ] [ –a algoType ] <in.db.fasta>
+        Index database sequence in the FASTA format.
+        OPTIONS:
+        -P STR  输出数据库的前缀；【默认和输入的文件名一致，输出的数据库在其输入文件所在的文件夹，并以该文件名为前缀。】
+        -a [is|bwtsw]   构建index的算法，有两个算法：
+                        is  是默认的算法，虽然相对较快，但是需要较大的内存，当构建的数据库大于2GB的时候就不能正常工作了。
+                        bwtsw   对于短的参考序列式不工作的，必须要大于等于10MB, 但能用于较大的基因组数据，比如人的全基因组。
+~~~
+  #### 4.2 mem比对
+  使用方法：
+  > mem Usage: bwa mem [options] ref.fa reads.fq [mates.fq]
+
+具体参数含义：
+  ~~~
+1 -t INT  线程数，默认是1。
+2 -M 将 shorter split hits 标记为次优，以兼容 Picard’s markDuplicates 软件。
+3 -p 若无此参数：输入文件只有1个，则进行单端比对；若输入文件有2个，则作为paired reads进行比对。若加入此参数：则仅以第1个文件作为输入(输入的文件若有2个，则忽略之)，该文件必须是read1.fq和read2.fa进行reads交叉的数据。
+4 -R STR  完整的read group的头部，可以用 '\t' 作为分隔符， 在输出的SAM文件中被解释为制表符TAB. read group 的ID，会被添加到输出文件的每一个read的头部。
+5 -T INT  当比对的分值比 INT 小时，不输出该比对结果，这个参数只影响输出的结果，不影响比对的过程。
+6 -a      将所有的比对结果都输出，包括 single-end 和 unpaired paired-end的 reads，但是这些比对的结果会被标记为次优。
+~~~
+具体PBS脚本：
+~~~
+#PBS -N mem_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -l mem=20gb
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+workdir=/public/home/liuxs/ncbi/dbGaP-22002/bwa/sam
+cd $workdir
+bwa mem -M -R "@RG\tID:<sample>\t\
+LM:<sample>\t\
+SM:<sample>\t\
+PL:illumina\tPU:<sample>"\
+ /public/home/liuxs/biodata/reference/genome/hg19/hg19.fa /public/home/liuxs/ncbi/dbGaP-22002/fastq_clean/<sample>_1_val_1.fq.gz\
+ /public/home/liuxs/ncbi/dbGaP-22002/fastq_clean/<sample>_2_val_2.fq.gz\
+> <sample>.sam        
+~~~
+比对之后就得到了sam文件其实这里可以直接将sam文件转换为bam文件，但是因为是第一次做就没有连起来而是分为两步进行了。
+
+
+  
 
 
 
