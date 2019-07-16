@@ -118,6 +118,7 @@ PL:illumina\tPU:<sample>"\
 
 ### 5.将sam文件转化成bam文件
 工具`samtools`，conda安装
+(samtools)[http://www.chenlianfu.com/?p=1399]参数详解
 ~~~
 #PBS -N sam2bam_<sample>
 #PBS -l nodes=1:ppn=4
@@ -132,7 +133,105 @@ source activate wes
 samtools view -bS /path/to/sample/<sample>.sam>\
 /path/to/target/<sample>.bam
 ~~~
-### 6.
+### 6.对bam文件排序(sort_bam)
+对bam文件按照染色体对应的条目按照坐标顺序从小到大排序，之后GATK流程不排序会报错。
+工具：`picard`中的`sortsam`。`picard`已经被集成在`GATK`中了。所以conda下载安装GATK4就好。
+这次是单独安装的`picard`。
+脚本：
+~~~
+#PBS -N sort_bam_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=10:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+workdir=/public/home/liuxs/ncbi/dbGaP-22002/bam
+
+source activate wes
+java -Djava.io.tmpdir=/path/to/tmp/tmp -jar /path/to/work/picard-2.18.23-0/picard.jar SortSam \
+	INPUT=/path/to/sam/<sample>.bam \
+	OUTPUT=/path/to/bam/<sample>.sort.bam \
+	SORT_ORDER=coordinate
+~~~
+注意在sort bam的时候会产生一个很大的临时文件，可以自定义临时文件存放位置.
+### 7.Mark Duplicates
+标记PCR重复，在之前的质量控制中会看到有很多重复序列，也就是在测序是经过PCR产生的重复，需要将其标记出来(不用去除)后续GATK会识别这些标记。
+工具：`picard`中的`MarkDuplicates`
+~~~
+#PBS -N mark_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=10:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+java -jar /path/to/picard.jar MarkDuplicates \
+        I=/path/to/sam/<sample>.sort.bam \
+        O=/path/tp/work/<sample>.rmdup.bam \
+        VALIDATION_STRINGENCY=LENIENT \
+        MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
+        M=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_martics/<sample>.sort.addhead.rmdup.metric
+
+~~~
+标记之后生成索引`.bai`文件。
+~~~
+#PBS -N index_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=10:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+samtools index /path/to/bam/<sample>.rmdup.bam \
+ /path/to/index/<sample>.bam.bai
+~~~
+### 8.BQSR(Base Quality Score Recalibration)
+工具：`GATK`
+这一步是对bam文件里reads的碱基质量值进行重新校正，使最后输出的bam文件中reads中碱基的质量值能够更加接近真实的与参考基因组之间错配的概率。这一步适用于多种数据类型，包括illunima、solid、454、CG等数据格式。在GATK2.0以上版本中还可以对indel的质量值进行校正，这一步对indel calling非常有帮助。
+具体信息[GATK](http://starsyi.github.io/2016/05/25/%E5%8F%98%E5%BC%82%E6%A3%80%E6%B5%8B%EF%BC%88BWA-SAMtools-picard-GATK%EF%BC%89/)
+分为两步：
+* BaseRecalibrator
+* Applybam
+#### 8.1 BaseRecalibrator
+~~~
+#PBS -N BQSR_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+java -jar -Xmx12G -Djava.io.tmpdir=/path/to/tmp  /path/to/gatk/gatk-package-4.1.2.0-local.jar BaseRecalibrator \
+-R /path/to/ref/hg19/hg19.fa \
+-I /path/to/bam/<sample>.rmdup.bam \
+--known-sites /path/to/hg19/ftp.broadinstitute.org/bundle/hg19/dbsnp_138.hg19.vcf.gz \
+-O /path/to/report/ex_<sample>.recal_data.grp 
+~~~
+#### 8.2 Applybam
+~~~
+#PBS -N BQSR_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+java -jar -Xmx12G -Djava.io.tmpdir=/path/to/tmp  /path/to/gatk/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar ApplyBQSR \
+-R /path/to/ref/hg19/hg19.fa \
+-I /path/to/bam/<sample>.rmdup.bam \
+--bqsr-recal-file /path/to/report/ex_<sample>.recal_data.grp \
+-O /path/to/bam/BQSR_bam/<sample>.marked.BQSR.bam
+~~~
+
+
+
 
 
   
