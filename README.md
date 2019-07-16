@@ -104,17 +104,35 @@ trim_galore -q 20 --phred33 --stringency 3 --length 20 -e 0.1 --paired $workdir/
 #PBS -j oe
 
 source activate wes
-workdir=/public/home/liuxs/ncbi/dbGaP-22002/bwa/sam
+workdir=/path/to/work/
 cd $workdir
 bwa mem -M -R "@RG\tID:<sample>\t\
 LM:<sample>\t\
 SM:<sample>\t\
 PL:illumina\tPU:<sample>"\
- /public/home/liuxs/biodata/reference/genome/hg19/hg19.fa /public/home/liuxs/ncbi/dbGaP-22002/fastq_clean/<sample>_1_val_1.fq.gz\
- /public/home/liuxs/ncbi/dbGaP-22002/fastq_clean/<sample>_2_val_2.fq.gz\
+ //path/to/ref/hg19/hg19.fa /path/to/sample/<sample>_1_val_1.fq.gz\
+ /path/to/sample/<sample>_2_val_2.fq.gz\
 > <sample>.sam        
 ~~~
 比对之后就得到了sam文件其实这里可以直接将sam文件转换为bam文件，但是因为是第一次做就没有连起来而是分为两步进行了。
+
+### 5.将sam文件转化成bam文件
+工具`samtools`，conda安装
+~~~
+#PBS -N sam2bam_<sample>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=05:00:00
+#PBS -l mem=10gb
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+samtools view -bS /path/to/sample/<sample>.sam>\
+/path/to/target/<sample>.bam
+~~~
+### 6.
 
 
   
