@@ -118,7 +118,7 @@ PL:illumina\tPU:<sample>"\
 
 ## 5.将sam文件转化成bam文件
 工具`samtools`，conda安装
-(samtools)[http://www.chenlianfu.com/?p=1399]
+[samtools](http://www.chenlianfu.com/?p=1399)
 ~~~
 #PBS -N sam2bam_<sample>
 #PBS -l nodes=1:ppn=4
