@@ -2,14 +2,14 @@
 #PBS -l nodes=1:ppn=4
 #PBS -l walltime=10:00:00
 #PBS -S /bin/bash
-#PBS -q normal_3
+#PBS -q xxxxxxx
 #PBS -j oe
 
 source activate wes
-java -jar /public/home/liuxs/anaconda3/envs/wes/share/picard-2.18.23-0/picard.jar MarkDuplicates \
-        I=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_bam/<sample>.sort.bam \
-        O=/public/home/liuxs/ncbi/dbGaP-22002/bam/mark_bam/<sample>.rmdup.bam \
+gatk --java-options "-Xmx20G -Djava.io.tmpdir=/path/to/tmp"  MarkDuplicates \
+        I=/path/<sample>.sort.bam \
+        O=/path/<sample>.rmdup.bam \
         VALIDATION_STRINGENCY=LENIENT \
         MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
-        M=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_martics/<sample>.sort.addhead.rmdup.metric
+        M=/path/<sample>.sort.addhead.rmdup.metric
 

@@ -2,14 +2,23 @@
 #PBS -l nodes=1:ppn=4
 #PBS -l walltime=20:00:00
 #PBS -S /bin/bash
-#PBS -q normal_3
+#PBS -q xxxxx
 #PBS -j oe
 
 source activate /public/home/liuxs/tmp/test/wes/
 
-java -jar -Xmx12G -Djava.io.tmpdir=/public/home/wangshx/wx/tmp  /public/home/liuxs/tmp/test/wes/share/gatk4-4.1.2.0-1/gatk-package-4.1.2.0-local.jar BaseRecalibrator \
--R /public/home/liuxs/biodata/reference/genome/hg19/hg19.fa \
--I /public/home/liuxs/ncbi/dbGaP-22002/bam/mark_bam/<sample>.rmdup.bam \
---known-sites /public/home/liuxs/biodata/reference/genome/hg19/ftp.broadinstitute.org/bundle/hg19/dbsnp_138.hg19.vcf.gz \
--O /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR_bam/report/ex_<sample>.recal_data.grp 
+ref=/path/to/hg19
+bam=/path/to/bam
+workdir=/path/to/work
 
+dbsnp=/path/to/dbsnp_148.hg19.vcf.gz 
+
+dbsnp1000G=/path/to/1000G_phase1.snps.high_confidence.hg19.vcf.gz
+
+dbindel100G=/path/to/Mills_and_1000G_gold_standard.indels.hg19.vcf.gz
+
+ gatk --java-options "-Xmx20G -Djava.io.tmpdir=/path/to/tmp"  BaseRecalibrator\
+    -R $ref/Homo_sapiens_assembly38.fasta \
+    -I $bam/<head>.sort.marked.bam \
+    --bqsr-recal-file $workdir/<head>.recal_data.table \
+    -O $workdir/<head>.sort.marked.BQSR.bam

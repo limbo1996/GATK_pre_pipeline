@@ -3,7 +3,7 @@
 #PBS -l walltime=20:00:00
 #PBS -l mem=10gb
 #PBS -S /bin/bash
-#PBS -q normal_3
+#PBS -q xxxxxxx
 #PBS -j oe
 
 source activate wes

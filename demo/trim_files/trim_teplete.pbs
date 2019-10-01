@@ -2,9 +2,10 @@
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=15:00:00
 #PBS -S /bin/bash
-#PBS -q normal_3
+#PBS -q xxxxx
 #PBS -j oe
+
 source activate wes
-workdir=/public/home/liuxs/ncbi/dbGaP-22002
+workdir=/path/
 trim_galore -q 20 --phred33 --stringency 3 --length 20 -e 0.1 --paired $workdir/fastq_gz/<sample>_1.fastq.gz $workdir\
 /fastq_gz/<sample>_2.fastq.gz -o $workdir/fastq_clean/

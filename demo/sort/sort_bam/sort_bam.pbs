@@ -1,13 +1,11 @@
-#PBS -N sort_bam_<sample>
+#PBS -N <sample>
 #PBS -l nodes=1:ppn=4
-#PBS -l walltime=10:00:00
+#PBS -l walltime=01:00:00
 #PBS -S /bin/bash
-#PBS -q normal_3
+#PBS -q xxxxxxxxx
 #PBS -j oe
-workdir=/public/home/liuxs/ncbi/dbGaP-22002/bam
 
-source activate wes
-java -Djava.io.tmpdir=/public/home/wangshx/wx/tmp -jar /public/home/liuxs/anaconda3/envs/wes/share/picard-2.18.23-0/picard.jar SortSam \
-	INPUT=/public/home/liuxs/ncbi/dbGaP-22002/bam/unsort_bam/<sample>.bam \
-	OUTPUT=/public/home/liuxs/ncbi/dbGaP-22002/bam/sort_bam/<sample>.sort.bam \
+gatk --java-options "-Xmx20G -Djava.io.tmpdir=/public/home/wangshx/wx/tmp" SortSam \
+	INPUT=/path/to/sam/<sample>.bam \
+	OUTPUT=/path/to/bam/<sample>.sort.bam \
 	SORT_ORDER=coordinate
