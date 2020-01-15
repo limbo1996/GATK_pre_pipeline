@@ -1,0 +1,15 @@
+#PBS -N mu_call_<sample2>
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=20:00:00
+#PBS -S /bin/bash
+#PBS -q normal_3
+#PBS -j oe
+
+source activate wes
+
+
+gatk --java-options "-Xmx20G -Djava.io.tmpdir=/path/to/tmp" FilterMutectCalls \
+ -V /public/home/liuxs/ncbi/dbGaP-22002/vcf/new_vcf/<sample2>.mutect2.vcf \
+ -R /public/home/liuxs/ncbi/dbGaP-22002/ref_test/new_hg19.fa \
+ -O /public/home/liuxs/ncbi/dbGaP-22002/vcf/new_f_vcf/<sample2>.somatic.vcf
+~~

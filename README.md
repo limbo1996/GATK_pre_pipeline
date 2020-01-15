@@ -2,10 +2,10 @@
 数据的预处理流程
 
 相关流程加本都在`demo`中
-## 最近做的数据处理，从sra数据得到mutation calling 以及indels，的过程，同样包括HLA-typing
-得到的突变以及indels的信息在VCF文件中。从最初的测序数据sra得到VCF文件。
+##### 最近做的数据处理，从sra数据得到mutation 以及indels的过程。
+得到的突变以及indels的信息在VCF文件中。也就是从最初的测序数据sra得到VCF文件。
 > 流程参考的[GATK官](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165)网推荐的流程
-  计算所用平台是上海科技大学计算平台。PBS脚本皆使用[@ShixiangWang](https://github.com/ShixiangWang/sync-deploy)师兄写的工具批量创建提交每一个样本生成一个PBS文件。
+  计算所用平台是上海科技大学计算平台。PBS脚本皆使用[@ShixiangWang](https://github.com/ShixiangWang/sync-deploy)师兄写的工具批量创建提交，每一个样本生成一个PBS文件。
 
 
 ![流程图](https://github.com/limbo1996/GATK_pre_pipeline/blob/master/IMG/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190716222447.png)
@@ -155,4 +155,36 @@ dbindel100G=/path/to/Mills_and_1000G_gold_standard.indels.hg19.vcf.gz
     -I $bam/<head>.sort.marked.bam \
     --bqsr-recal-file $workdir/<head>.recal_data.table \
     -O $workdir/<head>.sort.marked.BQSR.bam
+~~~
+这样GATK的预处理流程基本就结束了，之后是变异检测(mutation calling)
+
+## 变异检测
+mutaiton calling 用到的工具是[Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360035894731-Somatic-short-variant-discovery-SNVs-Indels-)同样已经整合进了GATK中。
+
+### mutation calling
+
+~~~
+source activate wes
+
+gatk --java-options "-Xmx20G -Djava.io.tmpdir=/path/to/tmp"  Mutect2 \
+ -R /public/home/liuxs/ncbi/dbGaP-22002/ref_test/new_hg19.fa \
+ -I /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR2_bam/files/<sample>.marked.BQSR.bam \
+ -I /public/home/liuxs/ncbi/dbGaP-22002/bam/BQSR2_bam/files/<sample1>.marked.BQSR.bam \
+ -O /public/home/liuxs/ncbi/dbGaP-22002/vcf/new_vcf/<sample2>.mutect2.vcf
+~~~
+
+参数含义：
+`-R`参考基因组
+`-I`需要输入的tumor和normal样本的bam文件
+`-O`输出的vcf文件
+
+### filter
+~~~
+source activate wes
+
+
+gatk --java-options "-Xmx20G -Djava.io.tmpdir=/path/to/tmp" FilterMutectCalls \
+ -V /public/home/liuxs/ncbi/dbGaP-22002/vcf/new_vcf/<sample2>.mutect2.vcf \
+ -R /public/home/liuxs/ncbi/dbGaP-22002/ref_test/new_hg19.fa \
+ -O /public/home/liuxs/ncbi/dbGaP-22002/vcf/new_f_vcf/<sample2>.somatic.vcf
 ~~~
